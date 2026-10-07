@@ -1,0 +1,8 @@
+.state {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+
+  p { margin: 0 0 .6rem; color: var(--danger); }
+  button { padding: .4rem .8rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; }
+}

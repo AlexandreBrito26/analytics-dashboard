@@ -39,14 +39,17 @@ O dashboard reúne os principais indicadores de um negócio (**receita, visitas,
 
 | | Recurso | Detalhes |
 |---|---|---|
-| 📈 | **Gráficos interativos** | Gráfico de área de receita com tooltip e filtro de 7, 14 ou 30 dias |
+| 📈 | **Gráficos interativos** | Receita (área), visitas (barras) e vendas por categoria (donut), com tooltips em R$, eixos compactos e filtro de 7, 14 ou 30 dias |
 | 🧮 | **Cards de métricas** | Valores formatados em pt-BR com variação percentual (▲ / ▼) |
-| 🧾 | **Tabela de pedidos** | Lista de pedidos com valor em BRL e status |
+| 🧾 | **Tabela de pedidos** | Busca (ignora acentos), filtro por status, ordenação por coluna, paginação e badges de status |
 | 🌗 | **Tema claro/escuro** | Alternância manual e detecção da preferência do sistema |
 | ⚡ | **Cache inteligente** | Requisições com TanStack Query: loading, cache e refetch automáticos |
 | 🧭 | **Code splitting** | Páginas carregadas sob demanda com `React.lazy` |
 | 🎞️ | **Animações** | Entrada suave dos componentes com Framer Motion |
-| 📱 | **Responsivo** | Layout adaptado de celular a desktop |
+| 📱 | **Responsivo** | No celular a sidebar vira um menu em gaveta (fecha com Esc, clique fora ou ao navegar) |
+| ♿ | **Acessível** | Link "pular para o conteúdo", `label` nos controles, `aria-sort` na tabela, foco visível e respeito a "reduzir movimento" |
+| 🔗 | **Período na URL** | `?range=7`, `14` ou `30`: o link é compartilhável e sobrevive ao recarregar |
+| 🧭 | **Página 404** | Rotas desconhecidas mostram uma página própria, com link de volta |
 
 ---
 
@@ -73,8 +76,11 @@ src/
 ├── app/                  # configuração do router
 ├── components/           # UI reutilizável (Layout, StatCard)
 ├── features/
-│   └── dashboard/        # componentes específicos do dashboard (RevenueChart)
-├── pages/                # telas (Dashboard, Orders)
+│   ├── dashboard/        # componentes específicos do dashboard (RevenueChart)
+│   └── orders/           # tabela de pedidos (busca, ordenação, paginação; lógica pura em ordersQuery.ts)
+├── hooks/                # hooks reutilizáveis (usePageTitle)
+├── pages/                # telas (Dashboard, Orders, NotFound)
+├── utils/                # formatadores (BRL, números compactos)
 ├── services/             # camada de dados (mocks → API real)
 ├── store/                # estado global com Zustand
 ├── styles/               # variáveis, mixins e estilos globais
@@ -113,9 +119,20 @@ Acesse **http://localhost:5173** 🎉
 | `npm run dev` | Inicia o servidor de desenvolvimento |
 | `npm run build` | Checa os tipos e gera o build de produção |
 | `npm run preview` | Serve o build localmente |
-| `npm test` | Roda os testes com Vitest |
+| `npm test` | Roda os testes com Vitest (modo watch) |
+| `npm run test:run` | Roda os testes uma vez (ideal para CI) |
+| `npm run lint` | Analisa o código com ESLint (`lint:fix` corrige o que for possível) |
+| `npm run format` | Formata tudo com Prettier (`format:check` só verifica) |
+| `npm run typecheck` | Checa os tipos com o TypeScript |
 
 ---
+
+## ✅ Qualidade de código
+
+- **ESLint 9** (config flat) com `typescript-eslint` e regras de hooks do React
+- **Prettier** para formatação; o `printWidth` é 110
+- **Husky + lint-staged** rodam lint e formatação só nos arquivos do commit
+- **GitHub Actions** (`.github/workflows/ci.yml`) executa lint, formatação, testes e build a cada push na `main` e em cada Pull Request
 
 ## ☁️ Deploy na Vercel
 
@@ -163,11 +180,12 @@ As páginas não precisam mudar, pois o TanStack Query já cuida de loading, err
 - [x] Cards de métricas e gráfico de receita
 - [x] Tema claro/escuro
 - [x] Tabela de pedidos
-- [ ] Paginação, busca e ordenação na tabela
-- [ ] Gráficos de pizza (categorias) e barras (visitas)
+- [x] Paginação, busca e ordenação na tabela
+- [x] Gráficos de pizza (categorias) e barras (visitas)
 - [ ] Integração com API real (Spring Boot + PostgreSQL)
 - [ ] Exportação de relatórios em CSV
-- [ ] Testes com Vitest e Testing Library
+- [x] Testes com Vitest e Testing Library
+- [x] ESLint, Prettier, Husky e CI no GitHub Actions
 
 ---
 

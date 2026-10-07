@@ -1,0 +1,12 @@
+.badge {
+  display: inline-block;
+  padding: .15rem .6rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  font-weight: 600;
+  background: color-mix(in srgb, var(--tone) 16%, transparent);
+  color: var(--tone);
+}
+.pago { --tone: var(--success); }
+.pendente { --tone: var(--warning); }
+.cancelado { --tone: var(--danger); }
